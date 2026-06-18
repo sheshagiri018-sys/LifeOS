@@ -1,0 +1,3 @@
+/* LifeOS – Dashboard extra styles */
+.tilt-card { transform-style: preserve-3d; }
+.js-tilt-glare { border-radius: var(--r-lg) !important; }

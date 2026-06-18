@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LifeOS – Your Digital Command Center</title>
+  <meta name="description" content="LifeOS is a premium personal productivity platform — plan, track, reflect, and grow." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <!-- Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+
+  <!-- Lenis Smooth Scroll -->
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+</head>
+<body>
+  <!-- Custom Cursor -->
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- Navigation -->
+  <nav class="nav" id="mainNav" role="navigation" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo" aria-label="LifeOS home">
+        <div class="logo-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <circle cx="14" cy="14" r="13" stroke="url(#logoGrad)" stroke-width="1.5"/>
+            <circle cx="14" cy="14" r="6" fill="url(#logoGrad)" opacity="0.8"/>
+            <circle cx="14" cy="7" r="2" fill="url(#logoGrad)"/>
+            <circle cx="7" cy="19" r="2" fill="url(#logoGrad)"/>
+            <circle cx="21" cy="19" r="2" fill="url(#logoGrad)"/>
+            <defs>
+              <linearGradient id="logoGrad" x1="0" y1="0" x2="28" y2="28">
+                <stop offset="0%" stop-color="#a78bfa"/>
+                <stop offset="100%" stop-color="#06b6d4"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <span class="logo-text">LifeOS</span>
+      </a>
+
+      <div class="nav-links" role="menubar">
+        <a href="#dashboard" class="nav-link" role="menuitem">Dashboard</a>
+        <a href="#tasks" class="nav-link" role="menuitem">Tasks</a>
+        <a href="#notes" class="nav-link" role="menuitem">Notes</a>
+        <a href="#journal" class="nav-link" role="menuitem">Journal</a>
+        <a href="#goals" class="nav-link" role="menuitem">Goals</a>
+        <a href="#analytics" class="nav-link" role="menuitem">Analytics</a>
+        <a href="#focus" class="nav-link" role="menuitem">Focus</a>
+      </div>
+
+      <div class="nav-actions">
+        <button class="btn-nav magnetic" data-magnetic>
+          <span>Enter OS</span>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="nav-menu-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Nav -->
+  <div class="mobile-nav" id="mobileNav" role="dialog" aria-label="Mobile navigation">
+    <div class="mobile-nav-links">
+      <a href="#dashboard" class="mobile-nav-link">Dashboard</a>
+      <a href="#tasks" class="mobile-nav-link">Tasks</a>
+      <a href="#notes" class="mobile-nav-link">Notes</a>
+      <a href="#journal" class="mobile-nav-link">Journal</a>
+      <a href="#goals" class="mobile-nav-link">Goals</a>
+      <a href="#analytics" class="mobile-nav-link">Analytics</a>
+      <a href="#focus" class="mobile-nav-link">Focus</a>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       HERO SECTION
+  ═══════════════════════════════════════ -->
+  <section class="hero" id="hero" aria-label="Hero">
+    <canvas id="heroCanvas" aria-hidden="true"></canvas>
+    <div class="aurora" aria-hidden="true">
+      <div class="aurora-orb aurora-orb-1"></div>
+      <div class="aurora-orb aurora-orb-2"></div>
+      <div class="aurora-orb aurora-orb-3"></div>
+    </div>
+    <div class="particles-field" id="particlesField" aria-hidden="true"></div>
+
+    <div class="hero-content">
+      <div class="hero-badge reveal-up">
+        <span class="badge-dot"></span>
+        <span>Your digital life, unified</span>
+      </div>
+
+      <h1 class="hero-title">
+        <span class="hero-title-line" id="greetingLine">Good morning</span>
+        <span class="hero-title-accent reveal-up" id="heroName">Welcome to</span>
+        <span class="hero-title-large clip-text reveal-up">LifeOS</span>
+      </h1>
+
+      <p class="hero-subtitle reveal-up">
+        A cinematic command center for your goals, tasks, notes, mood,<br class="desktop-br"/>
+        and everything that makes your life extraordinary.
+      </p>
+
+      <div class="hero-cta reveal-up">
+        <a href="#dashboard" class="btn-primary magnetic" data-magnetic>
+          <span>Open Dashboard</span>
+          <div class="btn-glow"></div>
+        </a>
+        <a href="#focus" class="btn-ghost magnetic" data-magnetic>
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.5"/><polygon points="7,6 13,9 7,12" fill="currentColor"/></svg>
+          <span>Start Focus</span>
+        </a>
+      </div>
+
+      <div class="hero-stats reveal-up">
+        <div class="hero-stat">
+          <span class="stat-num" data-count="12">0</span>
+          <span class="stat-label">Modules</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="hero-stat">
+          <span class="stat-num" data-count="100">0</span><span class="stat-suffix">%</span>
+          <span class="stat-label">Offline-first</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="hero-stat">
+          <span class="stat-num" data-count="0">0</span>
+          <span class="stat-label">Data shared</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-scroll-hint" aria-hidden="true">
+      <div class="scroll-hint-line"></div>
+      <span>Scroll to explore</span>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       LIVE DASHBOARD
+  ═══════════════════════════════════════ -->
+  <section class="section" id="dashboard" aria-label="Live Dashboard">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow reveal-up">Live Dashboard</div>
+        <h2 class="section-title reveal-up">Your world,<br/><em>at a glance</em></h2>
+      </div>
+
+      <div class="dashboard-grid">
+        <!-- Clock Card -->
+        <div class="dash-card dash-card--wide glass-card tilt-card reveal-card" data-tilt data-tilt-max="8" data-tilt-glare data-tilt-max-glare="0.15">
+          <div class="dash-card-glow"></div>
+          <div class="clock-display">
+            <div class="clock-time" id="clockTime">00:00:00</div>
+            <div class="clock-date" id="clockDate">Monday, 1 January 2025</div>
+            <div class="clock-ring">
+              <svg viewBox="0 0 120 120" class="clock-svg">
+                <circle cx="60" cy="60" r="54" stroke="rgba(167,139,250,0.15)" stroke-width="4" fill="none"/>
+                <circle cx="60" cy="60" r="54" stroke="url(#clockGrad)" stroke-width="4" fill="none"
+                  stroke-dasharray="339.3" stroke-dashoffset="339.3" id="clockProgress"
+                  stroke-linecap="round" transform="rotate(-90 60 60)"/>
+                <defs>
+                  <linearGradient id="clockGrad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#a78bfa"/>
+                    <stop offset="100%" stop-color="#06b6d4"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Weather Card -->
+        <div class="dash-card glass-card tilt-card reveal-card" data-tilt data-tilt-max="10" data-tilt-glare data-tilt-max-glare="0.1">
+          <div class="dash-card-glow"></div>
+          <div class="card-label">Weather</div>
+          <div class="weather-main">
+            <div class="weather-icon" id="weatherIcon">
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none" id="weatherSvg">
+                <circle cx="24" cy="22" r="10" fill="url(#sunGrad)" opacity="0.9"/>
+                <line x1="24" y1="4" x2="24" y2="8" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round"/>
+                <line x1="24" y1="36" x2="24" y2="40" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round"/>
+                <line x1="6" y1="22" x2="10" y2="22" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round"/>
+                <line x1="38" y1="22" x2="42" y2="22" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round"/>
+                <line x1="10.69" y1="8.69" x2="13.52" y2="11.52" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round"/>
+                <line x1="34.48" y1="32.48" x2="37.31" y2="35.31" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round"/>
+                <line x1="10.69" y1="35.31" x2="13.52" y2="32.48" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round"/>
+                <line x1="34.48" y1="11.52" x2="37.31" y2="8.69" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round"/>
+                <defs>
+                  <radialGradient id="sunGrad"><stop offset="0%" stop-color="#fef08a"/><stop offset="100%" stop-color="#f59e0b"/></radialGradient>
+                </defs>
+              </svg>
+            </div>
+            <div class="weather-temp" id="weatherTemp">--°</div>
+          </div>
+          <div class="weather-desc" id="weatherDesc">Loading weather…</div>
+          <div class="weather-meta">
+            <div class="weather-meta-item">
+              <span class="meta-icon">💧</span>
+              <span id="weatherHumidity">--%</span>
+            </div>
+            <div class="weather-meta-item">
+              <span class="meta-icon">💨</span>
+              <span id="weatherWind">-- km/h</span>
+            </div>
+          </div>
+          <div class="weather-sun">
+            <span>🌅 <span id="weatherSunrise">--:--</span></span>
+            <span>🌇 <span id="weatherSunset">--:--</span></span>
+          </div>
+        </div>
+
+        <!-- Productivity Score -->
+        <div class="dash-card glass-card tilt-card reveal-card" data-tilt data-tilt-max="10" data-tilt-glare data-tilt-max-glare="0.1">
+          <div class="dash-card-glow"></div>
+          <div class="card-label">Productivity Score</div>
+          <div class="score-display">
+            <canvas id="scoreChart" width="140" height="140"></canvas>
+            <div class="score-center">
+              <span class="score-num" id="prodScore">0</span>
+              <span class="score-unit">/ 100</span>
+            </div>
+          </div>
+          <div class="score-breakdown">
+            <div class="score-item">
+              <span class="score-dot" style="background:#a78bfa"></span>
+              <span>Tasks</span>
+              <span class="score-val" id="tasksScore">0%</span>
+            </div>
+            <div class="score-item">
+              <span class="score-dot" style="background:#06b6d4"></span>
+              <span>Focus</span>
+              <span class="score-val" id="focusScore">0%</span>
+            </div>
+            <div class="score-item">
+              <span class="score-dot" style="background:#34d399"></span>
+              <span>Habits</span>
+              <span class="score-val" id="habitsScore">0%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quote Card -->
+        <div class="dash-card dash-card--quote glass-card reveal-card">
+          <div class="dash-card-glow"></div>
+          <div class="card-label">Daily Inspiration</div>
+          <div class="quote-icon">❝</div>
+          <p class="quote-text" id="dailyQuote">Loading your daily inspiration…</p>
+          <p class="quote-author" id="quoteAuthor">— LifeOS</p>
+          <button class="quote-refresh" id="quoteRefresh" aria-label="Get new quote">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.5 2.5A6.5 6.5 0 1 1 7 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><polyline points="10,1 13.5,2.5 12,6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+
+        <!-- Streak Card -->
+        <div class="dash-card glass-card tilt-card reveal-card" data-tilt data-tilt-max="8">
+          <div class="dash-card-glow"></div>
+          <div class="card-label">Current Streak</div>
+          <div class="streak-display">
+            <div class="streak-fire">🔥</div>
+            <div class="streak-count" id="streakCount">0</div>
+            <div class="streak-label">days</div>
+          </div>
+          <div class="streak-bar">
+            <div class="streak-days" id="streakDays"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       TASK MANAGEMENT
+  ═══════════════════════════════════════ -->
+  <section class="section section--dark" id="tasks" aria-label="Task Management">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow reveal-up">Task Planner</div>
+        <h2 class="section-title reveal-up">Plan your<br/><em>perfect day</em></h2>
+      </div>
+
+      <div class="tasks-layout">
+        <div class="tasks-sidebar">
+          <div class="task-add-form glass-card">
+            <h3 class="form-title">Add Task</h3>
+            <input type="text" class="task-input" id="taskInput" placeholder="What needs to be done?" aria-label="New task" />
+            <div class="task-meta-row">
+              <select class="task-select" id="taskPeriod" aria-label="Time period">
+                <option value="morning">🌅 Morning</option>
+                <option value="afternoon">☀️ Afternoon</option>
+                <option value="evening">🌆 Evening</option>
+                <option value="night">🌙 Night</option>
+              </select>
+              <select class="task-select" id="taskPriority" aria-label="Priority">
+                <option value="high">🔴 High</option>
+                <option value="medium">🟡 Medium</option>
+                <option value="low">🟢 Low</option>
+              </select>
+            </div>
+            <button class="btn-primary btn-full magnetic" id="addTaskBtn" data-magnetic>
+              <span>Add Task</span>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+
+          <div class="tasks-summary glass-card">
+            <div class="summary-item">
+              <span class="summary-num" id="totalTasks">0</span>
+              <span class="summary-label">Total</span>
+            </div>
+            <div class="summary-item">
+              <span class="summary-num" id="doneTasks">0</span>
+              <span class="summary-label">Done</span>
+            </div>
+            <div class="summary-item">
+              <span class="summary-num" id="pendingTasks">0</span>
+              <span class="summary-label">Pending</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tasks-columns">
+          <div class="task-column" id="taskMorning">
+            <div class="column-header">
+              <span class="column-icon">🌅</span>
+              <span class="column-title">Morning</span>
+              <span class="column-count" id="morningCount">0</span>
+            </div>
+            <div class="column-tasks" id="morningTasks"></div>
+          </div>
+          <div class="task-column" id="taskAfternoon">
+            <div class="column-header">
+              <span class="column-icon">☀️</span>
+              <span class="column-title">Afternoon</span>
+              <span class="column-count" id="afternoonCount">0</span>
+            </div>
+            <div class="column-tasks" id="afternoonTasks"></div>
+          </div>
+          <div class="task-column" id="taskEvening">
+            <div class="column-header">
+              <span class="column-icon">🌆</span>
+              <span class="column-title">Evening</span>
+              <span class="column-count" id="eveningCount">0</span>
+            </div>
+            <div class="column-tasks" id="eveningTasks"></div>
+          </div>
+          <div class="task-column" id="taskNight">
+            <div class="column-header">
+              <span class="column-icon">🌙</span>
+              <span class="column-title">Night</span>
+              <span class="column-count" id="nightCount">0</span>
+            </div>
+            <div class="column-tasks" id="nightTasks"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Celebration Overlay -->
+    <div class="celebration-overlay" id="celebrationOverlay" aria-hidden="true">
+      <div class="celebration-content">
+        <div class="celebration-emoji">🎉</div>
+        <h3>All tasks complete!</h3>
+        <p>You crushed it today.</p>
+        <div id="confettiContainer"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       SMART NOTES
+  ═══════════════════════════════════════ -->
+  <section class="section" id="notes" aria-label="Smart Notes">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow reveal-up">Smart Notes</div>
+        <h2 class="section-title reveal-up">Capture every<br/><em>brilliant idea</em></h2>
+      </div>
+
+      <div class="notes-layout">
+        <div class="notes-toolbar glass-card reveal-up">
+          <div class="notes-search-wrap">
+            <svg class="search-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M11 11l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <input type="text" class="notes-search" id="notesSearch" placeholder="Search notes…" aria-label="Search notes" />
+          </div>
+          <div class="notes-filters">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="quick">⚡ Quick</button>
+            <button class="filter-btn" data-filter="study">📚 Study</button>
+            <button class="filter-btn" data-filter="project">🚀 Project</button>
+            <button class="filter-btn" data-filter="personal">🌿 Personal</button>
+            <button class="filter-btn" data-filter="ideas">💡 Ideas</button>
+          </div>
+          <button class="btn-primary magnetic" id="addNoteBtn" data-magnetic>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2v10M2 7h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <span>New Note</span>
+          </button>
+        </div>
+
+        <div class="notes-grid" id="notesGrid"></div>
+      </div>
+    </div>
+
+    <!-- Note Editor Modal -->
+    <div class="modal-overlay" id="noteModal" role="dialog" aria-modal="true" aria-label="Note editor">
+      <div class="modal glass-card">
+        <div class="modal-header">
+          <input type="text" class="modal-title-input" id="noteTitleInput" placeholder="Note title…" aria-label="Note title" />
+          <div class="modal-actions">
+            <select class="task-select" id="noteCategoryInput" aria-label="Category">
+              <option value="quick">⚡ Quick</option>
+              <option value="study">📚 Study</option>
+              <option value="project">🚀 Project</option>
+              <option value="personal">🌿 Personal</option>
+              <option value="ideas">💡 Ideas</option>
+            </select>
+            <button class="modal-close" id="noteModalClose" aria-label="Close editor">✕</button>
+          </div>
+        </div>
+        <textarea class="modal-content" id="noteContentInput" placeholder="Start writing…" aria-label="Note content"></textarea>
+        <div class="modal-footer">
+          <input type="text" class="tag-input" id="noteTagInput" placeholder="#add-tag" aria-label="Add tag" />
+          <button class="btn-primary magnetic" id="saveNoteBtn" data-magnetic>Save Note</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       DAILY JOURNAL
+  ═══════════════════════════════════════ -->
+  <section class="section section--dark" id="journal" aria-label="Daily Journal">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow reveal-up">Daily Journal</div>
+        <h2 class="section-title reveal-up">Your story,<br/><em>told beautifully</em></h2>
+      </div>
+
+      <div class="journal-layout">
+        <div class="journal-composer glass-card reveal-card">
+          <div class="journal-composer-header">
+            <div class="journal-date-display" id="journalDateDisplay"></div>
+            <div class="mood-selector" aria-label="Select mood">
+              <button class="mood-btn active" data-mood="happy" aria-label="Happy">😊</button>
+              <button class="mood-btn" data-mood="focused" aria-label="Focused">🎯</button>
+              <button class="mood-btn" data-mood="productive" aria-label="Productive">⚡</button>
+              <button class="mood-btn" data-mood="relaxed" aria-label="Relaxed">😌</button>
+              <button class="mood-btn" data-mood="busy" aria-label="Busy">🌪️</button>
+              <button class="mood-btn" data-mood="tired" aria-label="Tired">😴</button>
+            </div>
+          </div>
+          <textarea class="journal-textarea" id="journalEntry" placeholder="How was your day? Write anything — thoughts, reflections, gratitude…" aria-label="Journal entry"></textarea>
+          <div class="journal-composer-footer">
+            <div class="word-count" id="wordCount">0 words</div>
+            <button class="btn-primary magnetic" id="saveJournalBtn" data-magnetic>Save Entry</button>
+          </div>
+        </div>
+
+        <div class="journal-timeline" id="journalTimeline">
+          <div class="timeline-empty" id="timelineEmpty">
+            <div class="empty-icon">📓</div>
+            <p>Your journal is waiting for its first entry.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       GOALS
+  ═══════════════════════════════════════ -->
+  <section class="section" id="goals" aria-label="Goal Management">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow reveal-up">Goal Management</div>
+        <h2 class="section-title reveal-up">Dreams with<br/><em>deadlines</em></h2>
+      </div>
+
+      <div class="goals-tabs reveal-up">
+        <button class="goal-tab active" data-category="short">Short-Term</button>
+        <button class="goal-tab" data-category="long">Long-Term</button>
+        <button class="goal-tab" data-category="career">Career</button>
+        <button class="goal-tab" data-category="learning">Learning</button>
+      </div>
+
+      <div class="goals-grid" id="goalsGrid"></div>
+
+      <div class="goals-add reveal-up">
+        <div class="goal-add-form glass-card">
+          <h3 class="form-title">Add New Goal</h3>
+          <div class="form-row">
+            <input type="text" class="task-input" id="goalTitle" placeholder="Goal title" aria-label="Goal title" />
+            <select class="task-select" id="goalCategory" aria-label="Goal category">
+              <option value="short">Short-Term</option>
+              <option value="long">Long-Term</option>
+              <option value="career">Career</option>
+              <option value="learning">Learning</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <input type="text" class="task-input" id="goalDesc" placeholder="What's the goal?" aria-label="Goal description" />
+            <input type="number" class="task-input" id="goalProgress" placeholder="Progress (0–100)" min="0" max="100" aria-label="Goal progress" />
+          </div>
+          <button class="btn-primary magnetic" id="addGoalBtn" data-magnetic>Add Goal</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       MOOD TRACKER
+  ═══════════════════════════════════════ -->
+  <section class="section section--dark" id="mood" aria-label="Mood Analytics">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow reveal-up">Mood Analytics</div>
+        <h2 class="section-title reveal-up">Know your<br/><em>inner rhythm</em></h2>
+      </div>
+
+      <div class="mood-grid">
+        <div class="mood-chart-card glass-card reveal-card">
+          <h3 class="card-title">Weekly Mood</h3>
+          <canvas id="moodChart" height="220"></canvas>
+        </div>
+        <div class="mood-chart-card glass-card reveal-card">
+          <h3 class="card-title">Mood Distribution</h3>
+          <canvas id="moodDoughnut" height="220"></canvas>
+        </div>
+        <div class="mood-log glass-card reveal-card">
+          <h3 class="card-title">Log Today's Mood</h3>
+          <div class="mood-log-grid">
+            <button class="mood-log-btn" data-m="happy" aria-label="Log Happy">😊<span>Happy</span></button>
+            <button class="mood-log-btn" data-m="focused" aria-label="Log Focused">🎯<span>Focused</span></button>
+            <button class="mood-log-btn" data-m="productive" aria-label="Log Productive">⚡<span>Productive</span></button>
+            <button class="mood-log-btn" data-m="relaxed" aria-label="Log Relaxed">😌<span>Relaxed</span></button>
+            <button class="mood-log-btn" data-m="busy" aria-label="Log Busy">🌪️<span>Busy</span></button>
+            <button class="mood-log-btn" data-m="tired" aria-label="Log Tired">😴<span>Tired</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       ANALYTICS
+  ═══════════════════════════════════════ -->
+  <section class="section" id="analytics" aria-label="Productivity Analytics">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow reveal-up">Analytics</div>
+        <h2 class="section-title reveal-up">Data-driven<br/><em>self-awareness</em></h2>
+      </div>
+
+      <div class="analytics-grid">
+        <div class="analytics-card glass-card reveal-card">
+          <h3 class="card-title">Weekly Activity</h3>
+          <canvas id="weeklyChart" height="200"></canvas>
+        </div>
+        <div class="analytics-card glass-card reveal-card">
+          <h3 class="card-title">Monthly Progress</h3>
+          <canvas id="monthlyChart" height="200"></canvas>
+        </div>
+        <div class="analytics-card analytics-card--full glass-card reveal-card">
+          <h3 class="card-title">Activity Heatmap</h3>
+          <div class="heatmap-container" id="heatmapContainer" aria-label="Activity heatmap"></div>
+          <div class="heatmap-legend">
+            <span>Less</span>
+            <div class="legend-cells">
+              <div class="legend-cell" style="opacity:0.15"></div>
+              <div class="legend-cell" style="opacity:0.35"></div>
+              <div class="legend-cell" style="opacity:0.55"></div>
+              <div class="legend-cell" style="opacity:0.8"></div>
+              <div class="legend-cell"></div>
+            </div>
+            <span>More</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-card glass-card reveal-card">
+          <div class="stat-icon">✅</div>
+          <div class="stat-info">
+            <div class="stat-big" id="statTasks">0</div>
+            <div class="stat-label">Tasks Done</div>
+          </div>
+        </div>
+        <div class="stat-card glass-card reveal-card">
+          <div class="stat-icon">⏱️</div>
+          <div class="stat-info">
+            <div class="stat-big" id="statFocus">0h</div>
+            <div class="stat-label">Focus Time</div>
+          </div>
+        </div>
+        <div class="stat-card glass-card reveal-card">
+          <div class="stat-icon">📝</div>
+          <div class="stat-info">
+            <div class="stat-big" id="statNotes">0</div>
+            <div class="stat-label">Notes Created</div>
+          </div>
+        </div>
+        <div class="stat-card glass-card reveal-card">
+          <div class="stat-icon">📓</div>
+          <div class="stat-info">
+            <div class="stat-big" id="statJournal">0</div>
+            <div class="stat-label">Journal Entries</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       FOCUS MODE
+  ═══════════════════════════════════════ -->
+  <section class="section section--dark" id="focus" aria-label="Focus Mode">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow reveal-up">Focus Mode</div>
+        <h2 class="section-title reveal-up">Enter deep<br/><em>work state</em></h2>
+      </div>
+
+      <div class="focus-layout">
+        <div class="focus-timer-card glass-card reveal-card">
+          <div class="timer-mode-tabs">
+            <button class="timer-mode-btn active" data-mode="25" aria-label="Pomodoro 25 minutes">Pomodoro</button>
+            <button class="timer-mode-btn" data-mode="50" aria-label="Deep work 50 minutes">Deep Work</button>
+            <button class="timer-mode-btn" data-mode="5" aria-label="Short break 5 minutes">Short Break</button>
+            <button class="timer-mode-btn" data-mode="15" aria-label="Long break 15 minutes">Long Break</button>
+          </div>
+
+          <div class="timer-display">
+            <svg class="timer-svg" viewBox="0 0 240 240">
+              <circle cx="120" cy="120" r="108" stroke="rgba(167,139,250,0.1)" stroke-width="8" fill="none"/>
+              <circle cx="120" cy="120" r="108" stroke="url(#timerGrad)" stroke-width="8" fill="none"
+                stroke-dasharray="678.6" stroke-dashoffset="0" id="timerProgress"
+                stroke-linecap="round" transform="rotate(-90 120 120)"/>
+              <defs>
+                <linearGradient id="timerGrad" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#a78bfa"/>
+                  <stop offset="100%" stop-color="#06b6d4"/>
+                </linearGradient>
+              </defs>
+            </svg>
+            <div class="timer-inner">
+              <div class="timer-time" id="timerDisplay">25:00</div>
+              <div class="timer-session" id="timerSession">Pomodoro</div>
+            </div>
+          </div>
+
+          <div class="timer-controls">
+            <button class="timer-btn timer-btn--reset" id="timerReset" aria-label="Reset timer">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 10a7 7 0 1 1 2 4.9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><polyline points="3,6 3,10 7,10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button class="timer-btn timer-btn--main" id="timerToggle" aria-label="Start timer">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" id="timerIcon"><polygon points="6,4 20,12 6,20" fill="currentColor"/></svg>
+            </button>
+            <button class="timer-btn timer-btn--skip" id="timerSkip" aria-label="Skip session">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 5l10 5-10 5V5z" fill="currentColor" opacity="0.5"/><path d="M15 5v10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+
+          <div class="timer-sessions">
+            <span class="sessions-label">Sessions today:</span>
+            <div class="sessions-dots" id="sessionsDots"></div>
+          </div>
+        </div>
+
+        <div class="focus-sidebar">
+          <div class="ambient-card glass-card reveal-card">
+            <h3 class="card-title">Ambient Sound</h3>
+            <div class="ambient-grid">
+              <button class="ambient-btn" data-sound="rain" aria-label="Rain sounds">
+                <span class="ambient-icon">🌧️</span>
+                <span>Rain</span>
+              </button>
+              <button class="ambient-btn" data-sound="ocean" aria-label="Ocean sounds">
+                <span class="ambient-icon">🌊</span>
+                <span>Ocean</span>
+              </button>
+              <button class="ambient-btn" data-sound="forest" aria-label="Forest sounds">
+                <span class="ambient-icon">🌿</span>
+                <span>Forest</span>
+              </button>
+              <button class="ambient-btn" data-sound="cafe" aria-label="Café sounds">
+                <span class="ambient-icon">☕</span>
+                <span>Café</span>
+              </button>
+            </div>
+            <div class="volume-row">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 6h3l4-4v12l-4-4H2V6z" stroke="currentColor" stroke-width="1.3"/><path d="M11 5a3 3 0 0 1 0 6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+              <input type="range" class="volume-slider" id="volumeSlider" min="0" max="1" step="0.05" value="0.5" aria-label="Volume" />
+            </div>
+          </div>
+
+          <div class="focus-task-card glass-card reveal-card">
+            <h3 class="card-title">Current Task</h3>
+            <input type="text" class="task-input" id="focusTask" placeholder="What are you working on?" aria-label="Current focus task" />
+            <div class="focus-stats">
+              <div class="focus-stat-item">
+                <span class="focus-stat-num" id="todaySessions">0</span>
+                <span>Sessions</span>
+              </div>
+              <div class="focus-stat-item">
+                <span class="focus-stat-num" id="todayMinutes">0</span>
+                <span>Minutes</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       HABITS
+  ═══════════════════════════════════════ -->
+  <section class="section" id="habits" aria-label="Habit Tracker">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow reveal-up">Habit Tracker</div>
+        <h2 class="section-title reveal-up">Build your<br/><em>best self</em></h2>
+      </div>
+
+      <div class="habits-layout">
+        <div class="habit-add-form glass-card reveal-card">
+          <h3 class="form-title">New Habit</h3>
+          <input type="text" class="task-input" id="habitTitle" placeholder="Habit name" aria-label="Habit name" />
+          <div class="habit-icons">
+            <button class="habit-icon-btn active" data-icon="💪" aria-label="Exercise">💪</button>
+            <button class="habit-icon-btn" data-icon="📚" aria-label="Read">📚</button>
+            <button class="habit-icon-btn" data-icon="🧘" aria-label="Meditate">🧘</button>
+            <button class="habit-icon-btn" data-icon="💧" aria-label="Hydrate">💧</button>
+            <button class="habit-icon-btn" data-icon="🏃" aria-label="Run">🏃</button>
+            <button class="habit-icon-btn" data-icon="🎯" aria-label="Focus">🎯</button>
+            <button class="habit-icon-btn" data-icon="✍️" aria-label="Write">✍️</button>
+            <button class="habit-icon-btn" data-icon="🌙" aria-label="Sleep">🌙</button>
+          </div>
+          <button class="btn-primary magnetic" id="addHabitBtn" data-magnetic>Add Habit</button>
+        </div>
+
+        <div class="habits-list" id="habitsList"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       MEMORY GALLERY
+  ═══════════════════════════════════════ -->
+  <section class="section section--dark" id="memories" aria-label="Memory Gallery">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow reveal-up">Memory Gallery</div>
+        <h2 class="section-title reveal-up">Celebrate your<br/><em>wins</em></h2>
+      </div>
+
+      <div class="memory-toolbar reveal-up">
+        <input type="text" class="task-input memory-input" id="memoryTitle" placeholder="Achievement title…" aria-label="Memory title" />
+        <input type="text" class="task-input memory-input" id="memoryDesc" placeholder="Describe the moment…" aria-label="Memory description" />
+        <button class="btn-primary magnetic" id="addMemoryBtn" data-magnetic>Add Memory</button>
+      </div>
+
+      <div class="memory-masonry" id="memoryGrid"></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════ -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <span class="footer-logo">LifeOS</span>
+          <p class="footer-tagline">Your digital life, unified.</p>
+        </div>
+        <div class="footer-links">
+          <a href="#dashboard">Dashboard</a>
+          <a href="#tasks">Tasks</a>
+          <a href="#notes">Notes</a>
+          <a href="#journal">Journal</a>
+          <a href="#goals">Goals</a>
+          <a href="#focus">Focus</a>
+        </div>
+        <div class="footer-credit">
+          <p>Built with ❤️ · All data stored locally · Zero tracking</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/hero.js"></script>
+  <script src="js/clock.js"></script>
+  <script src="js/weather.js"></script>
+  <script src="js/tasks.js"></script>
+  <script src="js/notes.js"></script>
+  <script src="js/journal.js"></script>
+  <script src="js/goals.js"></script>
+  <script src="js/mood.js"></script>
+  <script src="js/analytics.js"></script>
+  <script src="js/focus.js"></script>
+  <script src="js/habits.js"></script>
+  <script src="js/memories.js"></script>
+  <script src="js/animations.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

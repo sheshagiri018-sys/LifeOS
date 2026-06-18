@@ -1,0 +1,12 @@
+{
+  "version": "1.0",
+  "app": "LifeOS",
+  "description": "Sample data structure for LifeOS modules",
+  "modules": {
+    "tasks": [{"id":1,"text":"Review project plan","period":"morning","priority":"high","done":false},{"id":2,"text":"Team standup call","period":"morning","priority":"medium","done":true}],
+    "notes": [{"id":1,"title":"Ideas for Side Project","content":"Build a habit tracker SaaS with AI insights.","category":"ideas","tag":"project"}],
+    "goals": [{"id":1,"title":"Launch Portfolio","desc":"Deploy to GitHub Pages","category":"short","progress":65}],
+    "mood_log": [{"mood":"productive","date":"2025-01-01T09:00:00.000Z"}],
+    "habits": [{"id":1,"name":"Morning Workout","icon":"💪","days":[true,true,false,true,true,false,false]}]
+  }
+}
