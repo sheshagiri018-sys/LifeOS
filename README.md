@@ -10,7 +10,7 @@
 
 ---
 
-## ✨ Vision!
+## ✨ Vision!🪐
 
 Most productivity applications focus on only one aspect of life.
 
@@ -20,7 +20,7 @@ Whether you're planning your day, recording memories, tracking habits, monitorin
 
 ---
 
-## 🌟 Core Features
+## 🌟 Core Features👑
 
 ### 📅 Smart Daily Planner
 
