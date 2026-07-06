@@ -32,7 +32,7 @@ Whether you're planning your day, recording memories, tracking habits, monitorin
 
 ---
 
-### 📝 Intelligent Notes System
+### 📝 Intelligent Notes System!!!!
 
 * Quick Notes
 * Study Notes
@@ -44,7 +44,7 @@ Store your thoughts in an organized and elegant workspace.
 
 ---
 
-### 📔 Daily Journal Timeline
+### 📔 Daily Journal Timeline🌠🪐✨
 
 Capture your day through:
 
