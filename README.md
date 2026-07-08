@@ -22,7 +22,7 @@ Whether you're planning your day, recording memories, tracking habits, monitorin
 
 ## 🌟 Core Features👑
 
-### 📅 Smart Daily Planner
+### 📅 Smart Daily Planner!!!!
 
 * Organize daily activities
 * Morning, Afternoon, Evening & Night planning
